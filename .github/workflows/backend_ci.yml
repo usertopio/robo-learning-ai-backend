@@ -5,7 +5,7 @@ on:
     branches: [dev]
 
 jobs:
-  build:
+  aekbuild:
     runs-on: ubuntu-latest
 
     steps:
