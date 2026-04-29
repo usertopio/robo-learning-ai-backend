@@ -3,6 +3,13 @@ name: Backend_CI
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      run_tests:
+        description: 'Run unit tests before building'
+        required: true
+        type: boolean
+        default: true
 
 jobs:
   build:
@@ -11,6 +18,20 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: ${{ github.event_name == 'push' || inputs.run_tests == true }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.15.0'
+
+      - name: Install Dependencies
+        if: ${{ github.event_name == 'push' || inputs.run_tests == true }}
+        run: npm ci
+
+      - name: Run Tests
+        if: ${{ github.event_name == 'push' || inputs.run_tests == true }}
+        run: npm test
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v3
