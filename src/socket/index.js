@@ -1,8 +1,10 @@
 const socketState = require('./socketState');
 
+const logger = require('../utils/logger');
+
 module.exports = (io) => {
     io.on('connection', (socket) => {
-        console.log(`🔌 Client connected: ${socket.id}`);
+        logger.info(`🔌 Client connected: ${socket.id}`);
 
         const syncToClient = () => {
             socket.emit('ai_flow_sync', socketState.globalFlow);
@@ -34,12 +36,12 @@ module.exports = (io) => {
         socket.on('training_progress', (data) => io.emit('ai_training_progress', data));
         
         socket.on('send_command_to_robot', (data) => {
-            console.log(`🤖 Command to ${data.robotId}: ${data.command}`);
+            logger.info(`🤖 Command to ${data.robotId}: ${data.command}`);
             io.to(data.robotId).emit('robot_execute', data);
         });
 
         socket.on('robot_command', (data) => {
-            console.log(`🤖 [AI→Robot] ${data.robotId}: ${data.command}`);
+            logger.info(`🤖 [AI→Robot] ${data.robotId}: ${data.command}`);
             io.to(data.robotId).emit('robot_execute', data);
             io.emit('robot_command_log', data);
         });
@@ -53,6 +55,6 @@ module.exports = (io) => {
             syncToClient();
         });
 
-        socket.on('disconnect', () => console.log(`❌ Client disconnected: ${socket.id}`));
+        socket.on('disconnect', () => logger.info(`❌ Client disconnected: ${socket.id}`));
     });
 };

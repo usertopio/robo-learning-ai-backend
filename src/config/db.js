@@ -10,6 +10,8 @@ const dbRun = promisify(db.run.bind(db));
 const dbGet = promisify(db.get.bind(db));
 const dbAll = promisify(db.all.bind(db));
 
+const logger = require('../utils/logger');
+
 const initDb = async () => {
     try {
         await dbRun("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT)");
@@ -26,9 +28,9 @@ const initDb = async () => {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);
         await dbRun("INSERT OR IGNORE INTO users (id, username, password) VALUES (1, 'guest', 'no-auth')");
-        console.log('✅ Database initialized');
+        logger.info('✅ Database initialized');
     } catch (err) {
-        console.error('❌ DB Init Error:', err.message);
+        logger.error(`❌ DB Init Error: ${err.message}`);
     }
 };
 

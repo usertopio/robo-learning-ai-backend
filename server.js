@@ -40,9 +40,11 @@ app.use('/api/train', trainRoutes(io));
 // Setup WebSockets
 setupSocket(io);
 
+const logger = require('./src/utils/logger');
+
 if (require.main === module) {
     initDb().then(() => {
-        server.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+        server.listen(PORT, () => logger.info(`🚀 Server running on http://localhost:${PORT}`));
     });
 }
 
