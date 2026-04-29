@@ -30,6 +30,6 @@ jobs:
           context: .
           push: true
           tags: |
-            usertopio/robo-learn-ai-backend:latest-amd64-arm64
-            usertopio/robo-learn-ai-backend:0.0.0-amd64-arm64
+            usertopio/robo-learn-ai-backend:latest-amd64-arm64-aek
+            usertopio/robo-learn-ai-backend:0.0.0-amd64-arm64-aek
           platforms: linux/amd64,linux/arm64
