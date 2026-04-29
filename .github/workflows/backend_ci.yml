@@ -33,10 +33,3 @@ jobs:
             usertopio/robo-learn-ai-backend:latest-amd64-arm64
             usertopio/robo-learn-ai-backend:0.0.0-amd64-arm64
           platforms: linux/amd64,linux/arm64
-      - name: Trigger deployment
-        run: |
-          curl -X POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "Authorization: Bearer ${{ secrets.DEPLOY_TOKEN }}" \
-          https://api.github.com/repos/usertopio/robo-learn-ai-deployment/dispatches \
-          -d '{"event_type":"deploy_backend"}'
