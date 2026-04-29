@@ -46,6 +46,8 @@ const initDb = async () => {
             status     TEXT DEFAULT 'pending',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);
+        // Ensure guest user exists for no-auth mode
+        await dbRun("INSERT OR IGNORE INTO users (id, username, password) VALUES (1, 'guest', 'no-auth')");
         console.log('✅ Database initialized');
     } catch (err) {
         console.error('❌ DB Init Error:', err.message);
@@ -220,7 +222,7 @@ app.post('/api/auth/login', async (req, res) => {
 const GUEST_USER_ID = 1; // Fixed guest user, no login needed
 
 // Ensure guest user exists on startup
-db.run("INSERT OR IGNORE INTO users (id, username, password) VALUES (1, 'guest', 'no-auth')");
+// Guest user is created in initDb() above
 
 app.get('/api/projects', async (req, res) => {
     try {
