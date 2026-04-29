@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       run_tests:
-        description: 'Run unit tests before building'
+        description: "Run unit tests before building"
         required: true
         type: boolean
         default: true
@@ -23,7 +23,7 @@ jobs:
         if: ${{ github.event_name == 'push' || inputs.run_tests == true }}
         uses: actions/setup-node@v4
         with:
-          node-version: '24.15.0'
+          node-version: "24.15.0"
 
       - name: Install Dependencies
         if: ${{ github.event_name == 'push' || inputs.run_tests == true }}
@@ -54,3 +54,5 @@ jobs:
             usertopio/robo-learn-ai-backend:latest-amd64-arm64
             usertopio/robo-learn-ai-backend:0.0.0-amd64-arm64
           platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
