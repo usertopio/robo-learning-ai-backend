@@ -26,7 +26,8 @@ const PORT = process.env.PORT || 3000;
 const SECRET_KEY = process.env.JWT_SECRET || 'ai-teachstack-secret-key';
 
 // --- Database Setup (Promisified) ---
-const db = new sqlite3.Database('./database.sqlite');
+const DB_PATH = process.env.NODE_ENV === 'test' ? ':memory:' : './database.sqlite';
+const db = new sqlite3.Database(DB_PATH);
 const dbRun = promisify(db.run.bind(db));
 const dbGet = promisify(db.get.bind(db));
 const dbAll = promisify(db.all.bind(db));
@@ -53,7 +54,7 @@ const initDb = async () => {
         console.error('❌ DB Init Error:', err.message);
     }
 };
-initDb();
+// initDb() called in start script or test setup
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -475,4 +476,10 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => console.log(`❌ Client disconnected: ${socket.id}`));
 });
 
-server.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+if (require.main === module) {
+    initDb().then(() => {
+        server.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+    });
+}
+
+module.exports = { app, server, initDb, db };
