@@ -12,7 +12,7 @@ on:
         default: true
 
 jobs:
-  test:
+  aek:
     runs-on: ubuntu-latest
 
     steps:
