@@ -12,8 +12,8 @@ on:
         default: true
 
 jobs:
-  build:
-    runs-on: self-hosted
+  test:
+    runs-on: self-hosted-backend
 
     steps:
       - name: Checkout repo
