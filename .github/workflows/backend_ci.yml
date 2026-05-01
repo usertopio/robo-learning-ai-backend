@@ -2,7 +2,7 @@ name: Backend_CI
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, top]
   workflow_dispatch:
     inputs:
       run_tests:
