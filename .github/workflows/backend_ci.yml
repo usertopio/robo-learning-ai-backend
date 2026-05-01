@@ -48,8 +48,8 @@ jobs:
           context: .
           push: true
           tags: |
-            usertopio/robo-learn-ai-backend:latest-amd64-top
-            usertopio/robo-learn-ai-backend:0.0.0-amd64-top
+            usertopio/robo-learn-ai-backend:latest-amd64-${{ github.ref_name }}
+            usertopio/robo-learn-ai-backend:0.0.0-amd64-${{ github.ref_name }}
           platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
