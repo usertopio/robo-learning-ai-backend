@@ -49,7 +49,7 @@ jobs:
           push: true
           tags: |
             usertopio/robo-learn-ai-backend:latest-amd64
-            usertopio/robo-learn-ai-backend:0.0.0-amd64
+            usertopio/robo-learn-ai-backend:1.0.0-amd64
           platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
