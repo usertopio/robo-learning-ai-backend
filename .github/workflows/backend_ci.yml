@@ -51,8 +51,8 @@ jobs:
           context: .
           push: true
           tags: |
-            usertopio/robo-learn-ai-backend:latest-amd64-arm64
-            usertopio/robo-learn-ai-backend:0.0.0-amd64-arm64
+            usertopio/robo-learn-ai-backend:latest-amd64-arm64-top
+            usertopio/robo-learn-ai-backend:0.0.0-amd64-arm64-top
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
