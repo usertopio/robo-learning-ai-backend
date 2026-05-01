@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const DB_PATH = process.env.NODE_ENV === 'test' ? ':memory:' : './database.sqlite';
+const DB_PATH = process.env.NODE_ENV === 'test' ? ':memory:' : (process.env.DATABASE_PATH || './database.sqlite');
 const db = new sqlite3.Database(DB_PATH);
 const dbRun = promisify(db.run.bind(db));
 const dbGet = promisify(db.get.bind(db));
