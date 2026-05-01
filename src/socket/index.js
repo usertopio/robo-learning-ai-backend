@@ -27,6 +27,13 @@ module.exports = (io) => {
             io.emit('ai_system_sync', data);
         });
 
+        socket.on('update_search_classes', (data) => {
+            logger.info(`🔍 Search classes update received: "${data}"`);
+            socketState.globalTargetClasses = data;
+            io.emit('ai_search_sync', data);
+            io.emit('update_search_classes', data); // Relay to AI Engine
+        });
+
         socket.on('ai_params_sync', (data) => {
             io.emit('ai_params_sync', data);
         });
