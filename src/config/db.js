@@ -6,9 +6,24 @@ dotenv.config();
 
 const DB_PATH = process.env.NODE_ENV === 'test' ? ':memory:' : (process.env.DATABASE_PATH || './database.sqlite');
 const db = new sqlite3.Database(DB_PATH);
-const dbRun = promisify(db.run.bind(db));
-const dbGet = promisify(db.get.bind(db));
-const dbAll = promisify(db.all.bind(db));
+const dbRun = (query, params = []) => new Promise((resolve, reject) => {
+    db.run(query, params, function(err) {
+        if (err) reject(err);
+        else resolve({ lastID: this.lastID, changes: this.changes });
+    });
+});
+const dbGet = (query, params = []) => new Promise((resolve, reject) => {
+    db.get(query, params, (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
+    });
+});
+const dbAll = (query, params = []) => new Promise((resolve, reject) => {
+    db.all(query, params, (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+    });
+});
 
 const logger = require('../utils/logger');
 

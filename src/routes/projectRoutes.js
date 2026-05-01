@@ -16,6 +16,9 @@ router.get('/projects', async (req, res) => {
 router.post('/save-flow', async (req, res) => {
     try {
         const { name, flow_data, project_id } = req.body;
+        const logger = require('../utils/logger');
+        logger.info(`💾 Save request received: project_id=${project_id}, name=${name}`);
+
         const nodesStr = JSON.stringify(flow_data?.nodes || []);
         const edgesStr = JSON.stringify(flow_data?.edges || []);
 
@@ -24,11 +27,14 @@ router.post('/save-flow', async (req, res) => {
                 [name, nodesStr, edgesStr, project_id]);
             res.json({ project_id, updated: true });
         } else {
-            db.run("INSERT INTO projects (user_id, name, nodes, edges) VALUES (?, ?, ?, ?)",
-                [GUEST_USER_ID, name || 'Untitled', nodesStr, edgesStr], function(err) {
-                    if (err) return res.status(500).json({ error: 'Failed to create project' });
-                    res.json({ project_id: this.lastID, created: true });
-                });
+            const result = await dbRun("INSERT INTO projects (user_id, name, nodes, edges) VALUES (?, ?, ?, ?)",
+                [GUEST_USER_ID, name || 'Untitled', nodesStr, edgesStr]);
+            // Note: dbRun should return an object with lastID if promisified correctly
+            // If not, we might need to check how dbRun is implemented. 
+            // Given db.js: const dbRun = promisify(db.run.bind(db));
+            // In sqlite3, db.run's 'this' context has lastID. promisify might not capture it easily.
+            // Let's check db.js again.
+            res.json({ project_id: result?.lastID || 'new', created: true });
         }
     } catch (err) {
         res.status(500).json({ error: 'Failed to save project' });
