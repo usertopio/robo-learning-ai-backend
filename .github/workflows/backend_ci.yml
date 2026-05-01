@@ -2,7 +2,7 @@ name: Backend_CI
 
 on:
   push:
-    branches: [main, top]
+    branches: [main, top, amd]
   workflow_dispatch:
     inputs:
       run_tests:
@@ -33,9 +33,6 @@ jobs:
         if: ${{ github.event_name == 'push' || inputs.run_tests == true }}
         run: npm test
 
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v3
-
       - name: Setup Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -51,8 +48,8 @@ jobs:
           context: .
           push: true
           tags: |
-            usertopio/robo-learn-ai-backend:latest-amd64-arm64-top
-            usertopio/robo-learn-ai-backend:0.0.0-amd64-arm64-top
-          platforms: linux/amd64,linux/arm64
+            usertopio/robo-learn-ai-backend:latest-amd64-top
+            usertopio/robo-learn-ai-backend:0.0.0-amd64-top
+          platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
