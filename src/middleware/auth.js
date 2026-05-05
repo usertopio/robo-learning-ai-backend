@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 const SECRET_KEY = process.env.JWT_SECRET || 'ai-teachstack-secret-key';
+if (!process.env.JWT_SECRET && process.env.NODE_ENV === 'production') {
+    console.warn('[WARN] JWT_SECRET not set — using insecure default in production!');
+}
 
 const authenticate = (req, res, next) => {
     const authHeader = req.headers['authorization'] || req.headers['x-access-token'];

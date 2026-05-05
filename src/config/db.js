@@ -27,6 +27,9 @@ const initDb = async () => {
             status     TEXT DEFAULT 'pending',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);
+        await dbRun("CREATE INDEX IF NOT EXISTS idx_projects_user_id ON projects (user_id)");
+        await dbRun("CREATE INDEX IF NOT EXISTS idx_projects_updated_at ON projects (updated_at DESC)");
+        await dbRun("CREATE INDEX IF NOT EXISTS idx_datasets_status ON datasets (status)");
         await dbRun("INSERT OR IGNORE INTO users (id, username, password) VALUES (1, 'guest', 'no-auth')");
         logger.info('✅ Database initialized');
     } catch (err) {
